@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cliente de API con Sockets</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.4.1/socket.io.js"></script>
+</head>
+<body>
+  <button id="consultar-api">Obtener Chiste de Chuck Norris</button>
+  <div id="resultado"></div>
+
+  <script>
+    const socket = io('http://localhost:3000'); // Conectar al servidor
+
+    // Manejar evento 'resultado-api' del servidor
+    socket.on('resultado-api', (joke) => {
+      // Mostrar el chiste en el cliente
+      document.getElementById('resultado').textContent = joke;
+    });
+
+    // Manejar evento 'error-api' del servidor
+    socket.on('error-api', (error) => {
+      // Mostrar mensaje de error en el cliente
+      document.getElementById('resultado').textContent = 'Error: ' + error;
+    });
+
+    // Escuchar el clic del botón para obtener el chiste de Chuck Norris
+    document.getElementById('consultar-api').addEventListener('click', () => {
+      // Emitir el evento 'consulta-api' al servidor
+      socket.emit('consulta-api');
+    });
+  </script>
+</body>
+</html>
